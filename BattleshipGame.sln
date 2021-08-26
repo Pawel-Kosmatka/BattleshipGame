@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battleship", "Battleship\Battleship.csproj", "{785DC2F3-5870-4046-8B5C-0A2151392312}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{19E1A136-0920-4022-8388-67DBB132B7EE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D326259C-AE13-476A-AF3E-1081973B756D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{785DC2F3-5870-4046-8B5C-0A2151392312}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{785DC2F3-5870-4046-8B5C-0A2151392312}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{785DC2F3-5870-4046-8B5C-0A2151392312}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{785DC2F3-5870-4046-8B5C-0A2151392312}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{785DC2F3-5870-4046-8B5C-0A2151392312} = {19E1A136-0920-4022-8388-67DBB132B7EE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F7D9199B-74A2-47FB-85BC-8D843473ACDF}
+	EndGlobalSection
+EndGlobal
