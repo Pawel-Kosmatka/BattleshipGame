@@ -1,4 +1,5 @@
 ﻿using Battleship.Core.Models;
+using Battleship.Logic.Models;
 using System.Collections.Generic;
 
 namespace Battleship.Logic

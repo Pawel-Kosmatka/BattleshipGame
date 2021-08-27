@@ -26,8 +26,8 @@ namespace Battleship.Logic
 
             var grids = new PlayerGrid[]
             {
-                playerOne.PositionShips(_random),
-                playerTwo.PositionShips(_random)
+                playerOne.PositionFleet(_random),
+                playerTwo.PositionFleet(_random)
             };
 
             var status = _gameController.PrepareNewGame(grids);

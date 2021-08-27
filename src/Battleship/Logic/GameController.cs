@@ -1,5 +1,6 @@
 ﻿using Battleship.Core.Enums;
 using Battleship.Core.Models;
+using Battleship.Logic.Models;
 using Battleship.Persistence;
 using System;
 using System.Collections.Generic;

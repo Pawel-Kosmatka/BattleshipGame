@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Battleship.Core.Models
+namespace Battleship.Logic.Models
 {
     public class GameStatus
     {

@@ -9,6 +9,7 @@ namespace Battleship.Core.Models
     public class ShipSquare
     {
         public Guid ShipId { get; init; }
+        public string ShipName { get; init; }
         public Point Coordinates { get; init; }
         public bool WasHit { get; private set; } = false;
 
