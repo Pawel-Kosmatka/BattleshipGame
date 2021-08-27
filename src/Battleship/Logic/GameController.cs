@@ -1,5 +1,6 @@
 ﻿using Battleship.Core.Enums;
 using Battleship.Core.Models;
+using Battleship.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,16 +9,27 @@ using System.Threading.Tasks;
 
 namespace Battleship.Logic
 {
-    public class GameController
+    public class GameController : IGameController
     {
-        public GameStatus PrepareNewGame()
+        private readonly GameContext _context;
+
+        public GameController(GameContext context)
         {
-            return new GameStatus();
+            _context = context;
+        }
+
+        public GameStatus PrepareNewGame(IEnumerable<PlayerGrid> playerGrids)
+        {
+            var game = new Game() { Grids = playerGrids };
+
+            _context.RegisterNewGame(game);
+
+            return new GameStatus() { GameId = game.Id};
         }
 
         public ShotResponse Shoot(Point coordinates)
         {
-            return new ShotResponse(new(1,1), ShotResult.Hit, "none");
+            return new ShotResponse(new(1, 1), ShotResult.Hit, "none");
         }
     }
 }
