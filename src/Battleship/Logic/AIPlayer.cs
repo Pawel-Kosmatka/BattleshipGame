@@ -11,8 +11,8 @@ namespace Battleship.Logic
 {
     public class AIPlayer
     {
-        public Guid Id { get; }
-        public string Name { get; }
+        public Guid Id { get; } = Guid.NewGuid();
+        public string Name { get; init; }
         public PlayerGrid OceanGrid { get; private set; }
         public Grid TrackingGrid { get; } = new Grid();
 

@@ -11,7 +11,7 @@ namespace Battleship.Logic
     {
         private readonly IGameController _gameController;
         private readonly Random _random;
-        private IDictionary<Guid, (AIPlayer, AIPlayer)> _games;
+        public IDictionary<Guid, (AIPlayer, AIPlayer)> Games { get; } = new Dictionary<Guid, (AIPlayer, AIPlayer)>();
 
         public AutoPlay(IGameController gameController)
         {
@@ -32,7 +32,7 @@ namespace Battleship.Logic
 
             var status = _gameController.PrepareNewGame(grids);
 
-            _games.Add(status.GameId, (playerOne,playerTwo));
+            Games.Add(status.GameId, (playerOne,playerTwo));
         }
     }
 }
