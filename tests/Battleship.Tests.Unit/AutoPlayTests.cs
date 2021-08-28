@@ -27,7 +27,7 @@ namespace Battleship.Tests.Unit
         [Fact]
         public void StartNewGame_ShouldAddNewGameToGames()
         {
-            var status = new GameStatus {GameId = _fixture.Create<Guid>() };
+            var status = new GameStatus(_fixture.Create<Guid>(), _fixture.Create<Guid>());
             _gameController.PrepareNewGame(Arg.Any<PlayerGrid[]>()).Returns(status);
 
             _sut.StartNewGame();

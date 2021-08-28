@@ -2,8 +2,5 @@
 
 namespace Battleship.Logic.Models
 {
-    public class GameStatus
-    {
-        public Guid GameId { get; init; }
-    }
+    public record GameStatus(Guid GameId, Guid Next, ShotResponse ShotResponse = null, Guid Shooter = default){}
 }
