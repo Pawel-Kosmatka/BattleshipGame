@@ -1,4 +1,5 @@
-﻿using Battleship.Core.Extensions;
+﻿using Battleship.Core.Enums;
+using Battleship.Core.Extensions;
 using Battleship.Core.Models;
 using Battleship.Core.Settings;
 using Battleship.Logic.Models;
@@ -16,15 +17,105 @@ namespace Battleship.Logic
         public string Name { get; init; }
         public PlayerGrid OceanGrid { get; private set; }
         public Grid TrackingGrid { get; } = new Grid();
+        public List<Point> LastHits { get; private set; } = new List<Point>();
 
         public Point TakeATarget(Random random)
         {
-            throw new NotImplementedException();
+            if (LastHits.Count != 0)
+            {
+                var possibleTargets = GetPossibleTargets();
+
+                var checkedTargets = possibleTargets.Where(c => CheckCoordintaes(c));
+
+                return checkedTargets.ElementAt(random.Next(checkedTargets.Count()));
+            }
+
+            return TargetRandomSquare(random);
+        }
+
+        private List<Point> GetPossibleTargets()
+        {
+            var possibleTargets = new List<Point>();
+
+            if (LastHits.Count > 1)
+            {
+                var sortedHits = LastHits.OrderBy(c => c.X).ThenBy(c => c.Y);
+                var shipStart = sortedHits.First();
+                var shipEnd = sortedHits.Last();
+
+
+                if (shipStart.X - shipEnd.X != 0)
+                {
+                    possibleTargets = new List<Point> { new Point(shipStart.X - 1, shipStart.Y), new Point(shipEnd.X + 1, shipEnd.Y) };
+                }
+                else
+                {
+                    possibleTargets = new List<Point> { new Point(shipStart.X, shipStart.Y - 1), new Point(shipEnd.X, shipEnd.Y + 1) };
+                }
+            }
+            if (LastHits.Count == 1)
+            {
+                var hit = LastHits.First();
+
+                possibleTargets = new List<Point> { new Point(hit.X - 1, hit.Y), new Point(hit.X + 1, hit.Y), new Point(hit.X, hit.Y - 1), new Point(hit.X, hit.Y + 1) };
+
+            }
+
+            return possibleTargets;
+        }
+
+        private Point TargetRandomSquare(Random random)
+        {
+            Point target;
+
+            do
+            {
+                target = new Point(random.Next(GameSettings.XLength), random.Next(GameSettings.YLength));
+            } while (!CheckCoordintaes(target));
+
+            return target;
+        }
+
+        private bool CheckCoordintaes(Point coordinates)
+        {
+            if (coordinates.X < 0 || coordinates.X >= GameSettings.XLength)
+            {
+                return false;
+            }
+            if (coordinates.Y < 0 || coordinates.Y >= GameSettings.YLength)
+            {
+                return false;
+            }
+            if (TrackingGrid.Squares.ValueAt(coordinates) == false)
+            {
+                return false;
+            }
+            if (TrackingGrid.Squares.ValueAt(coordinates) == true)
+            {
+                return false;
+            }
+            return true;
         }
 
         public void HandleShotResponse(ShotResponse response)
         {
-
+            if (response.Status == ShotResult.Miss)
+            {
+                TrackingGrid.Squares.SetAt(response.Cooridnates, false);
+                return;
+            }
+            if (response.Status == ShotResult.Hit)
+            {
+                TrackingGrid.Squares.SetAt(response.Cooridnates, true);
+                LastHits.Add(response.Cooridnates);
+                return;
+            }
+            if (response.Status == ShotResult.Sink)
+            {
+                TrackingGrid.Squares.SetAt(response.Cooridnates, true);
+                LastHits.Clear();
+                return;
+            }
         }
 
         public PlayerGrid PositionFleet(Random random)
