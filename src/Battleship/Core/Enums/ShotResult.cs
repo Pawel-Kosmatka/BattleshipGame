@@ -11,6 +11,7 @@ namespace Battleship.Core.Enums
         Hit,
         Miss,
         Sink,
+        FirstFleetSunk,
         GameOver
     }
 }

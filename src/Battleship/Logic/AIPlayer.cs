@@ -1,4 +1,5 @@
-﻿using Battleship.Core.Models;
+﻿using Battleship.Core.Extensions;
+using Battleship.Core.Models;
 using Battleship.Core.Settings;
 using Battleship.Logic.Models;
 using System;
@@ -16,7 +17,7 @@ namespace Battleship.Logic
         public PlayerGrid OceanGrid { get; private set; }
         public Grid TrackingGrid { get; } = new Grid();
 
-        public Point TakeAShot(Random random)
+        public Point TakeATarget(Random random)
         {
             throw new NotImplementedException();
         }
@@ -37,7 +38,7 @@ namespace Battleship.Logic
 
             foreach (var shipSquare in ships)
             {
-                OceanGrid.Squares[shipSquare.Coordinates.X, shipSquare.Coordinates.Y] = true;
+                OceanGrid.Squares.SetAt(shipSquare.Coordinates, true);
             }
 
             return OceanGrid;
