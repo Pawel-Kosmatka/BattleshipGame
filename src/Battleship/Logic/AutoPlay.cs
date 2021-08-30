@@ -35,10 +35,10 @@ namespace Battleship.Logic
 
             Games.Add(status.GameId, players);
 
-            return new CreatedPlayersStatus(players);
+            return new CreatedPlayersStatus(status.GameId, players);
         }
 
-        public async Task StartGameAsync(Guid id)
+        public async Task<GameEndStatus> StartGameAsync(Guid id)
         {
             var players = Games.FirstOrDefault(g => g.Key == id).Value;
 
@@ -47,28 +47,46 @@ namespace Battleship.Logic
             var status = await StartShootingLoopAsync(id, players, nextPlayer);
 
             GameOver(status);
+
+            return status;
         }
 
-        private void GameOver(GameStatus status)
+        private void GameOver(GameEndStatus status)
         {
             Games.Remove(status.GameId);
         }
 
-        private async Task<GameStatus> StartShootingLoopAsync(Guid gameId, AIPlayer[] players, Guid next)
+        private async Task<GameEndStatus> StartShootingLoopAsync(Guid gameId, AIPlayer[] players, Guid next)
         {
             AIPlayer nextPlayer;
             GameStatus status;
+            nextPlayer = players.First(p => p.Id == next);
+            string outputString = string.Empty;
 
             do
             {
-                nextPlayer = players.First(p => p.Id == next);
-
                 status = Shoot(gameId, nextPlayer);
+                nextPlayer = players.First(p => p.Id == status.Next);
 
                 await WaitASecondAsync();
-            } while (status.ShotResponse.Status != ShotResult.GameOver);
+            } while (status.ShotResponse.Status != ShotResult.GameOver && status.ShotResponse.Status != ShotResult.FirstFleetSunk);
 
-            return status;
+            outputString = $"{players.First(p => p.Id == status.ShotResponse.Shooter).Name} is a winner!!!";
+
+            if(status.ShotResponse.Status == ShotResult.FirstFleetSunk)
+            {
+                status = Shoot(gameId, nextPlayer);
+                nextPlayer = players.First(p => p.Id == status.Next);
+
+                if (status.ShotResponse.Status == ShotResult.GameOver)
+                {
+                    outputString = "It's a draw!!!";
+                }
+
+                await WaitASecondAsync();
+            }
+
+            return new GameEndStatus(gameId, outputString);
         }
 
         private static async Task WaitASecondAsync()

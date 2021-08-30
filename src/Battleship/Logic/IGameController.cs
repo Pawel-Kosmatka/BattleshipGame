@@ -9,6 +9,7 @@ namespace Battleship.Logic
     {
         GameStatus PrepareNewGame(IEnumerable<PlayerGrid> playerGrids);
         GameStatus TakeAShot(Guid gameId, Guid shooterId, Point coordinates);
+        IDisposable SubscribeForStatusUpdates(IObserver<GameStatus> observer);
         Guid GetNextPlayerId(Guid id);
     }
 }

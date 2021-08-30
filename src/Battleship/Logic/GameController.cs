@@ -56,6 +56,8 @@ namespace Battleship.Logic
             if (shotResponse == ShotResult.Hit)
             {
                 var ship = targetedGrid.Ships.FirstOrDefault(s => s.Coordinates == coordinates);
+                
+                ship.Hit();
 
                 var shipSunk = !targetedGrid.Ships
                     .Where(s => s.ShipId == ship.ShipId)
@@ -78,9 +80,11 @@ namespace Battleship.Logic
                     responseText = responseText += ", that was the last one!";
                     _context.RemoveGame(game.Id);
                 }
-
-                shotResponse = ShotResult.FirstFleetSunk;
-                responseText = responseText += ", that was the last one!";
+                else if (allSunk)
+                {
+                    shotResponse = ShotResult.FirstFleetSunk;
+                    responseText = responseText += ", that was the last one!";
+                }
             }
 
             var response = new ShotResponse(coordinates, shotResponse, responseText, shooterId);

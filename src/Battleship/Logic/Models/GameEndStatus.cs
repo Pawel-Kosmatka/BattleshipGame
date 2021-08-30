@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Battleship.Logic.Models
 {
-    public record CreatedPlayersStatus(Guid GameId,IEnumerable<AIPlayer> Players){}
+    public record GameEndStatus(Guid GameId, string Text){}
 }

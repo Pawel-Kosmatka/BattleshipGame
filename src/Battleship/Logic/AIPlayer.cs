@@ -21,12 +21,12 @@ namespace Battleship.Logic
 
         public Point TakeATarget(Random random)
         {
-            if (LastHits.Count != 0)
+            if (LastHits.Count > 0)
             {
                 var possibleTargets = GetPossibleTargets();
 
-                var checkedTargets = possibleTargets.Where(c => CheckCoordintaes(c));
-
+                var checkedTargets = possibleTargets.Where(c => CheckCoordinates(c));
+                
                 return checkedTargets.ElementAt(random.Next(checkedTargets.Count()));
             }
 
@@ -71,12 +71,12 @@ namespace Battleship.Logic
             do
             {
                 target = new Point(random.Next(GameSettings.XLength), random.Next(GameSettings.YLength));
-            } while (!CheckCoordintaes(target));
+            } while (!CheckCoordinates(target));
 
             return target;
         }
 
-        private bool CheckCoordintaes(Point coordinates)
+        private bool CheckCoordinates(Point coordinates)
         {
             if (coordinates.X < 0 || coordinates.X >= GameSettings.XLength)
             {
@@ -111,6 +111,12 @@ namespace Battleship.Logic
                 return;
             }
             if (response.Status == ShotResult.Sink)
+            {
+                TrackingGrid.Squares.SetAt(response.Cooridnates, true);
+                LastHits.Clear();
+                return;
+            }   
+            if (response.Status == ShotResult.FirstFleetSunk)
             {
                 TrackingGrid.Squares.SetAt(response.Cooridnates, true);
                 LastHits.Clear();
