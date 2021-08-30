@@ -26,6 +26,12 @@ namespace Battleship.Logic
                 var possibleTargets = GetPossibleTargets();
 
                 var checkedTargets = possibleTargets.Where(c => CheckCoordinates(c));
+
+                if (!checkedTargets.Any())
+                {
+                    LastHits.RemoveAt(LastHits.Count - 1);
+                    TakeATarget(random);
+                }
                 
                 return checkedTargets.ElementAt(random.Next(checkedTargets.Count()));
             }
@@ -44,11 +50,11 @@ namespace Battleship.Logic
                 var shipEnd = sortedHits.Last();
 
 
-                if (shipStart.X - shipEnd.X != 0)
+                if (shipStart.X - shipEnd.X != 0 && shipStart.Y - shipEnd.Y == 0)
                 {
                     possibleTargets = new List<Point> { new Point(shipStart.X - 1, shipStart.Y), new Point(shipEnd.X + 1, shipEnd.Y) };
                 }
-                else
+                else if (shipStart.X - shipEnd.X == 0 && shipStart.Y - shipEnd.Y != 0)
                 {
                     possibleTargets = new List<Point> { new Point(shipStart.X, shipStart.Y - 1), new Point(shipEnd.X, shipEnd.Y + 1) };
                 }
